@@ -1,0 +1,90 @@
+﻿<Window x:Class="ChatBot.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChatBot"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.CommandBindings>
+        <CommandBinding x:Name="Salir_CommandBinding" 
+                        Command="local:Comandos.Salir"
+                        Executed="Salir_CommandBinding_Executed"/>
+        <CommandBinding x:Name="ComprobarConexion_CommandBinding" 
+                        Command="local:Comandos.ComprobarConexion"
+                        Executed="ComprobarConexion_CommandBinding_Executed"/>
+        <CommandBinding x:Name="Configuracion_CommandBinding" 
+                        Command="local:Comandos.Configuracion"
+                        Executed="Configuracion_CommandBinding_Executed"
+                        CanExecute="Configuracion_CommandBinding_CanExecute"/>
+        <CommandBinding x:Name="NuevaConversacion_CommandBinding" 
+                        Command="local:Comandos.NuevaConversacion"
+                        Executed="NuevaConversacion_CommandBinding_Executed"
+                        CanExecute="NuevaConversacion_CommandBinding_CanExecute"/>
+        <CommandBinding x:Name="GuardarConversacion_CommandBinding" 
+                        Command="local:Comandos.GuardarConversacion"
+                        Executed="GuardarConversacion_CommandBinding_Executed"
+                        CanExecute="GuardarConversacion_CommandBinding_CanExecute"/>
+    </Window.CommandBindings>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_Archivo">
+                <MenuItem Command="local:Comandos.NuevaConversacion">
+                    <MenuItem.Icon >
+                        <Image Source="assets/new.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Command="local:Comandos.GuardarConversacion">
+                    <MenuItem.Icon >
+                        <Image Source="assets/save.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Command="local:Comandos.Salir">
+                    <MenuItem.Icon >
+                        <Image Source="assets/exit.ico"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Herramientas">
+                <MenuItem Command="local:Comandos.Configuracion">
+                    <MenuItem.Icon >
+                        <Image Source="assets/config.ico"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Command="local:Comandos.GuardarConversacion">
+                    <MenuItem.Icon >
+                        <Image Source="assets/save.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <Button Command="local:Comandos.NuevaConversacion">
+                    <Image Source="assets/new.png"/>
+                </Button>
+                <Button Command="local:Comandos.GuardarConversacion">
+                    <Image Source="assets/save.png"/>
+                </Button>
+                <Separator />
+                <Button Command="local:Comandos.Configuracion">
+                    <Image Source="assets/config.ico"/>
+                </Button>
+                <Button Command="local:Comandos.ComprobarConexion">
+                    <Image Source="assets/check.png"/>
+                </Button>
+                <Separator />
+                <Button Command="local:Comandos.Salir">
+                    <Image Source="assets/exit.ico"/>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+        <StackPanel DockPanel.Dock="Bottom">
+
+        </StackPanel>
+        <Grid>
+
+        </Grid>
+    </DockPanel>
+</Window>
