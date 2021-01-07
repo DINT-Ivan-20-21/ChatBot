@@ -5,86 +5,244 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatBot"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Icon="assets/robot.ico"
+        Title="ChatBot"
+        Height="600"
+        MinHeight="300"
+        Width="400"
+        MinWidth="200">
     <Window.CommandBindings>
-        <CommandBinding x:Name="Salir_CommandBinding" 
+        <CommandBinding x:Name="Salir_CommandBinding"
                         Command="local:Comandos.Salir"
-                        Executed="Salir_CommandBinding_Executed"/>
-        <CommandBinding x:Name="ComprobarConexion_CommandBinding" 
+                        Executed="Salir_CommandBinding_Executed" />
+        <CommandBinding x:Name="ComprobarConexion_CommandBinding"
                         Command="local:Comandos.ComprobarConexion"
-                        Executed="ComprobarConexion_CommandBinding_Executed"/>
-        <CommandBinding x:Name="Configuracion_CommandBinding" 
+                        Executed="ComprobarConexion_CommandBinding_Executed" />
+        <CommandBinding x:Name="Configuracion_CommandBinding"
                         Command="local:Comandos.Configuracion"
                         Executed="Configuracion_CommandBinding_Executed"
-                        CanExecute="Configuracion_CommandBinding_CanExecute"/>
-        <CommandBinding x:Name="NuevaConversacion_CommandBinding" 
+                        CanExecute="Configuracion_CommandBinding_CanExecute" />
+        <CommandBinding x:Name="NuevaConversacion_CommandBinding"
                         Command="local:Comandos.NuevaConversacion"
                         Executed="NuevaConversacion_CommandBinding_Executed"
-                        CanExecute="NuevaConversacion_CommandBinding_CanExecute"/>
-        <CommandBinding x:Name="GuardarConversacion_CommandBinding" 
+                        CanExecute="Conversacion_CommandBinding_CanExecute" />
+        <CommandBinding x:Name="GuardarConversacion_CommandBinding"
                         Command="local:Comandos.GuardarConversacion"
                         Executed="GuardarConversacion_CommandBinding_Executed"
-                        CanExecute="GuardarConversacion_CommandBinding_CanExecute"/>
+                        CanExecute="Conversacion_CommandBinding_CanExecute" />
+        <CommandBinding x:Name="MandarMensaje_CommandBinding"
+                        Command="local:Comandos.MandarMensaje"
+                        Executed="MandarMensaje_CommandBinding_Executed"
+                        CanExecute="MandarMensaje_CommandBinding_CanExecute" />
     </Window.CommandBindings>
+    <Window.Resources>
+        <!-- TextBlock Base-->
+        <Style TargetType="TextBlock" x:Key="BaseTextBlock">
+            <Setter Property="FontSize"
+                    Value="14" />
+        </Style>
+
+        <!-- Imagenes Toolbar y mandar mensaje-->
+        <Style TargetType="Image">
+            <Setter Property="Width"
+                    Value="25" />
+        </Style>
+        
+        <!-- Imagen Mensaje-->
+        <Style TargetType="Image"
+               x:Key="MensajeImage">
+            <Setter Property="Width"
+                    Value="25" />
+            <Setter Property="Source"
+                    Value="assets/hombre.png" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding EsBot}"
+                             Value="True">
+                    <Setter Property="Source"
+                            Value="assets/robot.png" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Nombre Mensaje-->
+        <Style TargetType="TextBlock"
+               x:Key="NombreImage"
+               BasedOn="{StaticResource BaseTextBlock}">
+            <Setter Property="FontWeight"
+                    Value="Bold" />
+            <Setter Property="FontSize"
+                    Value="14" />
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
+            <Setter Property="Margin"
+                    Value="5,0,0,0" />
+            <Setter Property="Text"
+                    Value="Usuario" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding EsBot}"
+                             Value="True">
+                    <Setter Property="Text"
+                            Value="Robot" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+        <!-- Borde mensajes -->
+        <Style TargetType="Border"
+               x:Key="MensajeBorder">
+            <Setter Property="BorderBrush"
+                    Value="Black" />
+            <Setter Property="BorderThickness"
+                    Value="2" />
+            <Setter Property="CornerRadius"
+                    Value="5" />
+            <Setter Property="Padding"
+                    Value="5" />
+            <Setter Property="Margin"
+                    Value="10,10,10,0" />
+            <Setter Property="Background"
+                    Value="LightGreen" />
+            <Setter Property="HorizontalAlignment"
+                    Value="Left" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding EsBot}"
+                             Value="True">
+                    <Setter Property="Background"
+                            Value="Aquamarine" />
+                    <Setter Property="HorizontalAlignment"
+                            Value="Right" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+        <!-- TextBox -->
+        <ControlTemplate x:Key="ChatTextBox"
+                         TargetType="{x:Type TextBox}">
+            <Border x:Name="border"
+                    BorderBrush="Black"
+                    BorderThickness="2"
+                    Background="{TemplateBinding Background}"
+                    SnapsToDevicePixels="True"
+                    Height="35">
+                <ScrollViewer x:Name="PART_ContentHost"
+                              Focusable="False"
+                              HorizontalScrollBarVisibility="Hidden"
+                              VerticalScrollBarVisibility="Hidden"
+                              Padding="5" />
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled"
+                         Value="False">
+                    <Setter Property="Opacity"
+                            TargetName="border"
+                            Value="0.56" />
+                </Trigger>
+                <Trigger Property="IsMouseOver"
+                         Value="True">
+                    <Setter Property="BorderBrush"
+                            TargetName="border"
+                            Value="#FF7EB4EA" />
+                </Trigger>
+                <Trigger Property="IsKeyboardFocused"
+                         Value="True">
+                    <Setter Property="BorderBrush"
+                            TargetName="border"
+                            Value="#FF569DE5" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Archivo">
                 <MenuItem Command="local:Comandos.NuevaConversacion">
-                    <MenuItem.Icon >
-                        <Image Source="assets/new.png"/>
+                    <MenuItem.Icon>
+                        <Image Source="assets/new.png" />
                     </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Command="local:Comandos.GuardarConversacion">
-                    <MenuItem.Icon >
-                        <Image Source="assets/save.png"/>
+                    <MenuItem.Icon>
+                        <Image Source="assets/save.png" />
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator />
                 <MenuItem Command="local:Comandos.Salir">
-                    <MenuItem.Icon >
-                        <Image Source="assets/exit.ico"/>
+                    <MenuItem.Icon>
+                        <Image Source="assets/exit.ico" />
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="_Herramientas">
                 <MenuItem Command="local:Comandos.Configuracion">
-                    <MenuItem.Icon >
-                        <Image Source="assets/config.ico"/>
+                    <MenuItem.Icon>
+                        <Image Source="assets/config.ico" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Command="local:Comandos.GuardarConversacion">
-                    <MenuItem.Icon >
-                        <Image Source="assets/save.png"/>
+                <MenuItem Command="local:Comandos.ComprobarConexion">
+                    <MenuItem.Icon>
+                        <Image Source="assets/check.png" />
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
         </Menu>
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>
-                <Button Command="local:Comandos.NuevaConversacion">
-                    <Image Source="assets/new.png"/>
+                <Button Command="local:Comandos.NuevaConversacion"
+                        ToolTip="Nueva Conversación">
+                    <Image Source="assets/new.png" />
                 </Button>
-                <Button Command="local:Comandos.GuardarConversacion">
-                    <Image Source="assets/save.png"/>
-                </Button>
-                <Separator />
-                <Button Command="local:Comandos.Configuracion">
-                    <Image Source="assets/config.ico"/>
-                </Button>
-                <Button Command="local:Comandos.ComprobarConexion">
-                    <Image Source="assets/check.png"/>
+                <Button Command="local:Comandos.GuardarConversacion"
+                        ToolTip="Guardar Conversación">
+                    <Image Source="assets/save.png" />
                 </Button>
                 <Separator />
-                <Button Command="local:Comandos.Salir">
-                    <Image Source="assets/exit.ico"/>
+                <Button Command="local:Comandos.Configuracion"
+                        ToolTip="Configuración">
+                    <Image Source="assets/config.ico" />
+                </Button>
+                <Button Command="local:Comandos.ComprobarConexion"
+                        ToolTip="Comprobar conexion">
+                    <Image Source="assets/check.png" />
+                </Button>
+                <Separator />
+                <Button Command="local:Comandos.Salir"
+                        ToolTip="Salir">
+                    <Image Source="assets/exit.ico" />
                 </Button>
             </ToolBar>
         </ToolBarTray>
-        <StackPanel DockPanel.Dock="Bottom">
-
-        </StackPanel>
-        <Grid>
-
-        </Grid>
+        <DockPanel DockPanel.Dock="Bottom">
+            <Button Command="local:Comandos.MandarMensaje"
+                    DockPanel.Dock="Right"
+                    IsDefault="True">
+                <Image Margin="5,0"
+                       Stretch="Uniform"
+                       Source="assets/send.png" />
+            </Button>
+            <TextBox x:Name="ChatTextBox"
+                     Text=""
+                     FontSize="15"
+                     Template="{DynamicResource ChatTextBox}"/>
+        </DockPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      Background="LightYellow">
+            <ItemsControl x:Name="MensajesItemsControl">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource MensajeBorder}">
+                            <DockPanel>
+                                <StackPanel DockPanel.Dock="Top"
+                                            Orientation="Horizontal">
+                                    <Image Style="{StaticResource MensajeImage}" />
+                                    <TextBlock Style="{StaticResource NombreImage}" />
+                                </StackPanel>
+                                <TextBlock Style="{StaticResource BaseTextBlock}" TextWrapping="Wrap"
+                                           Text="{Binding Texto}" />
+                            </DockPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </DockPanel>
 </Window>

@@ -14,7 +14,7 @@ namespace ChatBot
             });
 
         public static readonly RoutedUICommand ComprobarConexion = new RoutedUICommand(
-            "Comprobar conexión",
+            "C_omprobar conexión",
             "ComprobarConexion",
             typeof(Comandos),
             new InputGestureCollection
@@ -23,7 +23,7 @@ namespace ChatBot
             });
 
         public static readonly RoutedUICommand Configuracion = new RoutedUICommand(
-            "Configuración",
+            "_Configuración",
             "Configuracion",
             typeof(Comandos),
             new InputGestureCollection
@@ -48,5 +48,10 @@ namespace ChatBot
             {
                 new KeyGesture(Key.G, ModifierKeys.Control)
             });
+        public static readonly RoutedUICommand MandarMensaje = new RoutedUICommand(
+            "Mandar mensaje",
+            "MandarMensaje",
+            typeof(Comandos),
+            null);
     }
 }
