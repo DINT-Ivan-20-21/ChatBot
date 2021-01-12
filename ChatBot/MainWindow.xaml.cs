@@ -7,17 +7,16 @@ using System.Windows.Input;
 
 namespace ChatBot
 {
-    /// <summary>
-    /// Lógica de interacción para MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        private const string MENSAJE = "Lo siento, estoy un poco cansado para hablar.";
         private ObservableCollection<Mensaje> mensajes;
+
         public MainWindow()
         {
             mensajes = new ObservableCollection<Mensaje>();
             InitializeComponent();
-            MensajesItemsControl.ItemsSource = mensajes;
+            ChatItemsControl.ItemsSource = mensajes;
         }
 
         private void Salir_CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -35,12 +34,10 @@ namespace ChatBot
 
         private void Configuracion_CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            throw new NotImplementedException();
-        }
-
-        private void Configuracion_CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = false;
+            Configuracion configuracion = new Configuracion();
+            configuracion.Owner = this;
+            configuracion.ShowInTaskbar = false;
+            configuracion.ShowDialog();
         }
 
         private void NuevaConversacion_CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -63,13 +60,15 @@ namespace ChatBot
                         }
                     }
                 }
-            }catch(IOException ioe)
+            }
+            catch (IOException ioe)
             {
                 MessageBox.Show("Se produjo un error al guardar la conversacion",
                            "Guardar conversación",
                            MessageBoxButton.OK,
                            MessageBoxImage.Error);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message,
                            "Guardar conversación",
@@ -87,8 +86,9 @@ namespace ChatBot
         private void MandarMensaje_CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             mensajes.Add(new Mensaje(false, ChatTextBox.Text));
-            mensajes.Add(new Mensaje(true, "Lo siento, estoy un poco cansado para hablar."));
+            mensajes.Add(new Mensaje(true, MENSAJE));
             ChatTextBox.Text = "";
+            ChatScrollViewer.ScrollToVerticalOffset(ChatScrollViewer.ExtentHeight);
         }
 
         private void MandarMensaje_CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)

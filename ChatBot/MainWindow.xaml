@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatBot"
+        xmlns:properties="clr-namespace:ChatBot.Properties"
         mc:Ignorable="d"
         Icon="assets/robot.ico"
         Title="ChatBot"
@@ -20,8 +21,7 @@
                         Executed="ComprobarConexion_CommandBinding_Executed" />
         <CommandBinding x:Name="Configuracion_CommandBinding"
                         Command="local:Comandos.Configuracion"
-                        Executed="Configuracion_CommandBinding_Executed"
-                        CanExecute="Configuracion_CommandBinding_CanExecute" />
+                        Executed="Configuracion_CommandBinding_Executed" />
         <CommandBinding x:Name="NuevaConversacion_CommandBinding"
                         Command="local:Comandos.NuevaConversacion"
                         Executed="NuevaConversacion_CommandBinding_Executed"
@@ -37,9 +37,12 @@
     </Window.CommandBindings>
     <Window.Resources>
         <!-- TextBlock Base-->
-        <Style TargetType="TextBlock" x:Key="BaseTextBlock">
+        <Style TargetType="TextBlock"
+               x:Key="BaseTextBlock">
             <Setter Property="FontSize"
                     Value="14" />
+            <Setter Property="TextWrapping"
+                    Value="Wrap" />
         </Style>
 
         <!-- Imagenes Toolbar y mandar mensaje-->
@@ -47,20 +50,42 @@
             <Setter Property="Width"
                     Value="25" />
         </Style>
-        
+
         <!-- Imagen Mensaje-->
         <Style TargetType="Image"
                x:Key="MensajeImage">
             <Setter Property="Width"
                     Value="25" />
-            <Setter Property="Source"
-                    Value="assets/hombre.png" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding EsBot}"
                              Value="True">
                     <Setter Property="Source"
                             Value="assets/robot.png" />
                 </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding EsBot}"
+                                   Value="False" />
+                        <Condition Binding="{Binding Source={x:Static properties:Settings.Default}, Path=sexo}"
+                                   Value="Mujer" />
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Source"
+                                Value="assets/mujer.png" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding EsBot}"
+                                   Value="False" />
+                        <Condition Binding="{Binding Source={x:Static properties:Settings.Default}, Path=sexo}"
+                                   Value="Hombre" />
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Source"
+                                Value="assets/hombre.png" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
             </Style.Triggers>
         </Style>
 
@@ -86,7 +111,7 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        
+
         <!-- Borde mensajes -->
         <Style TargetType="Border"
                x:Key="MensajeBorder">
@@ -96,25 +121,27 @@
                     Value="2" />
             <Setter Property="CornerRadius"
                     Value="5" />
+            <Setter Property="MaxWidth"
+                    Value="300" />
             <Setter Property="Padding"
                     Value="5" />
             <Setter Property="Margin"
                     Value="10,10,10,0" />
             <Setter Property="Background"
-                    Value="LightGreen" />
+                    Value="{Binding Source={x:Static properties:Settings.Default}, Path=colorMensajeUsuario}" />
             <Setter Property="HorizontalAlignment"
                     Value="Left" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding EsBot}"
                              Value="True">
                     <Setter Property="Background"
-                            Value="Aquamarine" />
+                            Value="{Binding Source={x:Static properties:Settings.Default}, Path=colorMensajeBot}" />
                     <Setter Property="HorizontalAlignment"
                             Value="Right" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        
+
         <!-- TextBox -->
         <ControlTemplate x:Key="ChatTextBox"
                          TargetType="{x:Type TextBox}">
@@ -128,7 +155,8 @@
                               Focusable="False"
                               HorizontalScrollBarVisibility="Hidden"
                               VerticalScrollBarVisibility="Hidden"
-                              Padding="5" />
+                              Padding="5"
+                              VerticalAlignment="Center" />
             </Border>
             <ControlTemplate.Triggers>
                 <Trigger Property="IsEnabled"
@@ -222,11 +250,13 @@
             <TextBox x:Name="ChatTextBox"
                      Text=""
                      FontSize="15"
-                     Template="{DynamicResource ChatTextBox}"/>
+                     Template="{DynamicResource ChatTextBox}" />
         </DockPanel>
-        <ScrollViewer VerticalScrollBarVisibility="Auto"
-                      Background="LightYellow">
-            <ItemsControl x:Name="MensajesItemsControl">
+        <ScrollViewer x:Name="ChatScrollViewer"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto"
+                      Background="{Binding Source={x:Static properties:Settings.Default}, Path=colorFondo}">
+            <ItemsControl x:Name="ChatItemsControl">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border Style="{StaticResource MensajeBorder}">
@@ -236,7 +266,7 @@
                                     <Image Style="{StaticResource MensajeImage}" />
                                     <TextBlock Style="{StaticResource NombreImage}" />
                                 </StackPanel>
-                                <TextBlock Style="{StaticResource BaseTextBlock}" TextWrapping="Wrap"
+                                <TextBlock Style="{StaticResource BaseTextBlock}"
                                            Text="{Binding Texto}" />
                             </DockPanel>
                         </Border>

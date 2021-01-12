@@ -53,5 +53,10 @@ namespace ChatBot
             "MandarMensaje",
             typeof(Comandos),
             null);
+        public static readonly RoutedUICommand GuardarConfiguracion = new RoutedUICommand(
+            "Guardar Configuracion",
+            "GuardarConfiguracion",
+            typeof(Comandos),
+            null);
     }
 }
