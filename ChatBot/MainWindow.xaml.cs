@@ -1,15 +1,18 @@
-﻿using Microsoft.Win32;
+﻿using Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker;
+using Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker.Models;
+using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace ChatBot
 {
     public partial class MainWindow : Window
     {
-        private const string MENSAJE = "Lo siento, estoy un poco cansado para hablar.";
         private ObservableCollection<Mensaje> mensajes;
 
         public MainWindow()
@@ -24,20 +27,44 @@ namespace ChatBot
             Application.Current.Shutdown();
         }
 
-        private void ComprobarConexion_CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void ComprobarConexion_CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show("Conexión correcta con el servidor del bot",
+            string estado = "";
+            try
+            {
+                var cliente = new QnAMakerRuntimeClient(new EndpointKeyServiceClientCredentials(Properties.Settings.Default.EndPointKey)) { RuntimeEndpoint = Properties.Settings.Default.EndPoint };
+                QnASearchResultList response = await cliente.Runtime.GenerateAnswerAsync(Properties.Settings.Default.KnowledgeBaseId, new QueryDTO { Question = "Hola" });
+                estado = "Conexión correcta con el servidor del bot";
+            }
+            catch (IOException ioex)
+            {
+                estado = "No se puedo establecer la conexión con el bot";
+            }
+            MessageBox.Show(estado,
                             "Comprobar conexión",
                             MessageBoxButton.OK,
                             MessageBoxImage.Information);
+
         }
 
         private void Configuracion_CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Configuracion configuracion = new Configuracion();
             configuracion.Owner = this;
-            configuracion.ShowInTaskbar = false;
-            configuracion.ShowDialog();
+
+            configuracion.ColorFondo = typeof(Colors).GetProperty("LightYellow").Name;
+            configuracion.ColorMensajeUsuario = typeof(Colors).GetProperty(Properties.Settings.Default.colorMensajeUsuario).Name;
+            configuracion.ColorMensajeBot = typeof(Colors).GetProperty(Properties.Settings.Default.colorMensajeBot).Name;
+            configuracion.Sexo = Properties.Settings.Default.sexo;
+            
+            if(configuracion.ShowDialog() == true)
+            {
+                Properties.Settings.Default.colorFondo = configuracion.ColorFondo;
+                Properties.Settings.Default.colorMensajeUsuario = configuracion.ColorMensajeUsuario;
+                Properties.Settings.Default.colorMensajeBot = configuracion.ColorMensajeBot;
+                Properties.Settings.Default.sexo = configuracion.Sexo;
+                Properties.Settings.Default.Save();
+            }
         }
 
         private void NuevaConversacion_CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -83,10 +110,25 @@ namespace ChatBot
             e.CanExecute = mensajes.Count > 0;
         }
 
-        private void MandarMensaje_CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void MandarMensaje_CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             mensajes.Add(new Mensaje(false, ChatTextBox.Text));
-            mensajes.Add(new Mensaje(true, MENSAJE));
+            Mensaje mensajeBot = new Mensaje(true, "Pensando...");
+            mensajes.Add(mensajeBot);
+
+            string respuesta = "";
+            try
+            {
+                var cliente = new QnAMakerRuntimeClient(new EndpointKeyServiceClientCredentials(Properties.Settings.Default.EndPointKey)) { RuntimeEndpoint = Properties.Settings.Default.EndPoint };
+                QnASearchResultList response = await cliente.Runtime.GenerateAnswerAsync(Properties.Settings.Default.KnowledgeBaseId, new QueryDTO { Question = ChatTextBox.Text });
+                respuesta = response.Answers[0].Answer;
+            }
+            catch (IOException ioex)
+            {
+                respuesta = "Estoy muy cansado para hablar";
+            }
+
+            mensajeBot.Texto = respuesta;
             ChatTextBox.Text = "";
             ChatScrollViewer.ScrollToVerticalOffset(ChatScrollViewer.ExtentHeight);
         }

@@ -70,5 +70,32 @@ namespace ChatBot.Properties {
                 this["colorMensajeBot"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://t6chatbot.azurewebsites.net/")]
+        public string EndPoint {
+            get {
+                return ((string)(this["EndPoint"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("31dc7ed3-a570-4e19-91d1-90ec54d98b39")]
+        public string EndPointKey {
+            get {
+                return ((string)(this["EndPointKey"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("69ae1af3-6fd9-4eae-941a-13b139d3e6ba")]
+        public string KnowledgeBaseId {
+            get {
+                return ((string)(this["KnowledgeBaseId"]));
+            }
+        }
     }
 }

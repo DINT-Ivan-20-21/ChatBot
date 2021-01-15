@@ -7,6 +7,7 @@
         xmlns:local="clr-namespace:ChatBot"
         mc:Ignorable="d"
         Title="Configuración de la aplicación"
+        ShowInTaskbar="False"
         ResizeMode="NoResize"
         Icon="assets/config.ico"
         Height="300"
@@ -32,6 +33,7 @@
             <Setter Property="Grid.Row"
                     Value="4" />
         </Style>
+        
         <!-- TextBlock -->
         <Style TargetType="TextBlock">
             <Setter Property="Grid.Column"
@@ -90,16 +92,19 @@
                    Text="Sexo del usuario" />
 
         <ComboBox x:Name="FondoComboBox"
+                  SelectedValue="{Binding Path=ColorFondo}"
                   Style="{StaticResource ColorComboBox}"
                   Grid.Row="0" />
         <ComboBox x:Name="UsuarioComboBox"
+                  SelectedValue="{Binding Path=ColorMensajeUsuario}"
                   Style="{StaticResource ColorComboBox}"
                   Grid.Row="1" />
         <ComboBox x:Name="RobotComboBox"
+                  SelectedValue="{Binding Path=ColorMensajeBot}"
                   Style="{StaticResource ColorComboBox}"
                   Grid.Row="2" />
         <ComboBox x:Name="SexoComboBox"
-                  SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=sexo}"
+                  SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=sexo}"
                   Grid.Row="3"
                   Grid.Column="1"
                   Margin="0,0,10,0"

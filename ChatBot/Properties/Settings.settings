@@ -14,5 +14,14 @@
     <Setting Name="colorMensajeBot" Type="System.String" Scope="User">
       <Value Profile="(Default)">Aquamarine</Value>
     </Setting>
+    <Setting Name="EndPoint" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://t6chatbot.azurewebsites.net/</Value>
+    </Setting>
+    <Setting Name="EndPointKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">31dc7ed3-a570-4e19-91d1-90ec54d98b39</Value>
+    </Setting>
+    <Setting Name="KnowledgeBaseId" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">69ae1af3-6fd9-4eae-941a-13b139d3e6ba</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
