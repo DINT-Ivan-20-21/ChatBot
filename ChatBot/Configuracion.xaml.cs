@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
 
@@ -18,7 +19,7 @@ namespace ChatBot
         {
             InitializeComponent();
 
-            this.DataContext = this;
+            DataContext = this;
             FondoComboBox.ItemsSource = typeof(Colors).GetProperties();
             UsuarioComboBox.ItemsSource = typeof(Colors).GetProperties();
             RobotComboBox.ItemsSource = typeof(Colors).GetProperties();

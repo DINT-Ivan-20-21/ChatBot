@@ -59,9 +59,9 @@ namespace ChatBot
             
             if(configuracion.ShowDialog() == true)
             {
-                Properties.Settings.Default.colorFondo = configuracion.ColorFondo;
-                Properties.Settings.Default.colorMensajeUsuario = configuracion.ColorMensajeUsuario;
-                Properties.Settings.Default.colorMensajeBot = configuracion.ColorMensajeBot;
+                Properties.Settings.Default.colorFondo = configuracion.ColorFondo.ToString();
+                Properties.Settings.Default.colorMensajeUsuario = configuracion.ColorMensajeUsuario.ToString();
+                Properties.Settings.Default.colorMensajeBot = configuracion.ColorMensajeBot.ToString();
                 Properties.Settings.Default.sexo = configuracion.Sexo;
                 Properties.Settings.Default.Save();
             }
