@@ -4,7 +4,6 @@ using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -33,10 +32,10 @@ namespace ChatBot
             try
             {
                 var cliente = new QnAMakerRuntimeClient(new EndpointKeyServiceClientCredentials(Properties.Settings.Default.EndPointKey)) { RuntimeEndpoint = Properties.Settings.Default.EndPoint };
-                QnASearchResultList response = await cliente.Runtime.GenerateAnswerAsync(Properties.Settings.Default.KnowledgeBaseId, new QueryDTO { Question = "Hola" });
+                await cliente.Runtime.GenerateAnswerAsync(Properties.Settings.Default.KnowledgeBaseId, new QueryDTO { Question = "Hola" });
                 estado = "Conexión correcta con el servidor del bot";
             }
-            catch (IOException ioex)
+            catch (IOException)
             {
                 estado = "No se puedo establecer la conexión con el bot";
             }
@@ -52,16 +51,16 @@ namespace ChatBot
             Configuracion configuracion = new Configuracion();
             configuracion.Owner = this;
 
-            configuracion.ColorFondo = typeof(Colors).GetProperty("LightYellow").Name;
-            configuracion.ColorMensajeUsuario = typeof(Colors).GetProperty(Properties.Settings.Default.colorMensajeUsuario).Name;
-            configuracion.ColorMensajeBot = typeof(Colors).GetProperty(Properties.Settings.Default.colorMensajeBot).Name;
+            configuracion.ColorFondo = typeof(Colors).GetProperty(Properties.Settings.Default.colorFondo);
+            configuracion.ColorMensajeUsuario = typeof(Colors).GetProperty(Properties.Settings.Default.colorMensajeUsuario);
+            configuracion.ColorMensajeBot = typeof(Colors).GetProperty(Properties.Settings.Default.colorMensajeBot);
             configuracion.Sexo = Properties.Settings.Default.sexo;
             
             if(configuracion.ShowDialog() == true)
             {
-                Properties.Settings.Default.colorFondo = configuracion.ColorFondo.ToString();
-                Properties.Settings.Default.colorMensajeUsuario = configuracion.ColorMensajeUsuario.ToString();
-                Properties.Settings.Default.colorMensajeBot = configuracion.ColorMensajeBot.ToString();
+                Properties.Settings.Default.colorFondo = configuracion.ColorFondo.Name;
+                Properties.Settings.Default.colorMensajeUsuario = configuracion.ColorMensajeUsuario.Name;
+                Properties.Settings.Default.colorMensajeBot = configuracion.ColorMensajeBot.Name;
                 Properties.Settings.Default.sexo = configuracion.Sexo;
                 Properties.Settings.Default.Save();
             }
@@ -88,7 +87,7 @@ namespace ChatBot
                     }
                 }
             }
-            catch (IOException ioe)
+            catch (IOException)
             {
                 MessageBox.Show("Se produjo un error al guardar la conversacion",
                            "Guardar conversación",
@@ -123,7 +122,7 @@ namespace ChatBot
                 QnASearchResultList response = await cliente.Runtime.GenerateAnswerAsync(Properties.Settings.Default.KnowledgeBaseId, new QueryDTO { Question = ChatTextBox.Text });
                 respuesta = response.Answers[0].Answer;
             }
-            catch (IOException ioex)
+            catch (IOException)
             {
                 respuesta = "Estoy muy cansado para hablar";
             }

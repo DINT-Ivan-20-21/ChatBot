@@ -10,9 +10,9 @@ namespace ChatBot
     /// </summary>
     public partial class Configuracion : Window
     {
-        public string ColorFondo { get; set; }
-        public string ColorMensajeUsuario { get; set; }
-        public string ColorMensajeBot { get; set; }
+        public PropertyInfo ColorFondo { get; set; }
+        public PropertyInfo ColorMensajeUsuario { get; set; }
+        public PropertyInfo ColorMensajeBot { get; set; }
         public string Sexo { get; set; }
 
         public Configuracion()

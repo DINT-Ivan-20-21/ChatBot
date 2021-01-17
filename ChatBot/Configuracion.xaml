@@ -59,12 +59,12 @@
                     Value="6,3" />
             <Setter Property="VerticalAlignment"
                     Value="Center" />
-            <Setter Property="ItemTemplate"
-                    Value="{StaticResource ColorDataTemplate}" />
             <Setter Property="Grid.Column"
                     Value="1" />
             <Setter Property="Grid.ColumnSpan"
                     Value="2" />
+            <Setter Property="ItemTemplate"
+                    Value="{StaticResource ColorDataTemplate}" />
         </Style>
 
     </Window.Resources>
@@ -92,7 +92,7 @@
                    Text="Sexo del usuario" />
 
         <ComboBox x:Name="FondoComboBox"
-                  SelectedValue="{Binding ColorFondo}"
+                  SelectedItem="{Binding ColorFondo}"
                   Style="{StaticResource ColorComboBox}"
                   Grid.Row="0" />
         <ComboBox x:Name="UsuarioComboBox"
