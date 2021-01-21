@@ -6,7 +6,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace ChatBot
 {
@@ -51,16 +50,16 @@ namespace ChatBot
             Configuracion configuracion = new Configuracion();
             configuracion.Owner = this;
 
-            configuracion.ColorFondo = typeof(Colors).GetProperty(Properties.Settings.Default.colorFondo);
-            configuracion.ColorMensajeUsuario = typeof(Colors).GetProperty(Properties.Settings.Default.colorMensajeUsuario);
-            configuracion.ColorMensajeBot = typeof(Colors).GetProperty(Properties.Settings.Default.colorMensajeBot);
+            configuracion.ColorFondo = Properties.Settings.Default.colorFondo;
+            configuracion.ColorMensajeUsuario = Properties.Settings.Default.colorMensajeUsuario;
+            configuracion.ColorMensajeBot = Properties.Settings.Default.colorMensajeBot;
             configuracion.Sexo = Properties.Settings.Default.sexo;
             
             if(configuracion.ShowDialog() == true)
             {
-                Properties.Settings.Default.colorFondo = configuracion.ColorFondo.Name;
-                Properties.Settings.Default.colorMensajeUsuario = configuracion.ColorMensajeUsuario.Name;
-                Properties.Settings.Default.colorMensajeBot = configuracion.ColorMensajeBot.Name;
+                Properties.Settings.Default.colorFondo = configuracion.ColorFondo;
+                Properties.Settings.Default.colorMensajeUsuario = configuracion.ColorMensajeUsuario;
+                Properties.Settings.Default.colorMensajeBot = configuracion.ColorMensajeBot;
                 Properties.Settings.Default.sexo = configuracion.Sexo;
                 Properties.Settings.Default.Save();
             }

@@ -92,15 +92,18 @@
                    Text="Sexo del usuario" />
 
         <ComboBox x:Name="FondoComboBox"
-                  SelectedItem="{Binding ColorFondo}"
+                  SelectedValue="{Binding ColorFondo}"
+                  SelectedValuePath="Name"
                   Style="{StaticResource ColorComboBox}"
                   Grid.Row="0" />
         <ComboBox x:Name="UsuarioComboBox"
                   SelectedValue="{Binding ColorMensajeUsuario}"
+                  SelectedValuePath="Name"
                   Style="{StaticResource ColorComboBox}"
                   Grid.Row="1" />
         <ComboBox x:Name="RobotComboBox"
                   SelectedValue="{Binding ColorMensajeBot}"
+                  SelectedValuePath="Name"
                   Style="{StaticResource ColorComboBox}"
                   Grid.Row="2" />
         <ComboBox x:Name="SexoComboBox"
